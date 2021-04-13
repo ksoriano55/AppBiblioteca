@@ -9,7 +9,7 @@
 using namespace std;
 //*** PUNTEROS BASE ***//
 classCliente *Iclient, *Fclient, *Tclient, *Aclient;
-classLibro *Ilib, *Flib, *TLib;
+classLibro *Ilib, *Flib, *TLib, *ALib;
 //*** VARIABLES ***//
 int _Opc, _Acc;
 int _Id, _Existencia;
@@ -23,12 +23,16 @@ void ProcMostrarCliente();
 void ProcBuscarCliente(int);
 void ProcEditarCliente(int);
 void ProcEliminarCliente(int);
+void ProcBuscarLibroEsp(int);
+void ProcModificarLibros(int);
 /*================================================*/
 
 void ProcGuardarLibro(int, string, string, int, double);
 void ProcGuardarLibrostxt();
 void ProcBuscarLibros();
 void ProcMostrarLibros();
+void ProcLimpiarLista();
+
 int main(int argc, char** argv) {
 	do{
 		cout << setw(5) << "  \n    <<:::: MENU ::::>>" << setw(5) << endl;
@@ -106,10 +110,17 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 3: // *** BUSCAR ***//
-						ProcBuscarLibros();
+							cout << "<<<=================== BUSQUEDA DE LIBROS ======================>>>";
+							cout << "\nIngrese el Id: ";
+							cin >> _Id;
+							ProcBuscarLibroEsp(_Id);
 							break;
 						
 						case 4: // *** EDITAR ***//
+						cout << "<<<=================== EDITAR REGISTRO DE LIBROS ======================>>>";
+						cout << "\nIngrese el Id: ";
+							cin >> _Id;
+							ProcModificarLibros(_Id);
 							break;
 							
 						case 5: // *** ELIMINAR ***//
@@ -345,15 +356,17 @@ void ProcBuscarLibros(){
 		archivo>>Categoria;
 		archivo>>Existencia;
 		archivo>>Precio;
+		
 		if(!archivo.eof()){
 			ProcGuardarLibro(atoi(Id),Nombre,Categoria, atoi(Existencia), atoi(Precio));
 		}
 	}
-	archivo.close();
-	
+	archivo.close();	
 }
 
 void ProcMostrarLibros(){
+	ProcLimpiarLista();
+	ProcBuscarLibros();
 	TLib=Ilib;	
 	while(TLib!=NULL){
 		cout<<"Id: "<<TLib->Id<<endl;
@@ -364,5 +377,60 @@ void ProcMostrarLibros(){
 		cout<<"================================================================================================================="<<endl;
 		TLib=TLib->sig;
 	}
+}
+
+void ProcBuscarLibroEsp(int x){
+	ProcBuscarLibros();
+	bool encontrado=false;
+	TLib=Ilib;	
+	ALib=TLib;
+	while(TLib!=NULL && !encontrado){
+		if(TLib->Id == x){
+		cout<<"Id: "<<TLib->Id<<endl;
+		cout<<"Nombre Libro: "<<TLib->Nombre<<endl;
+		cout<<"Categoria: "<<TLib->Categoria<<endl;
+		cout<<"Cantidades Existentes : "<<TLib->Existencia<<endl;
+		cout<<"Precio por unidad: "<<TLib->Precio<<endl;
+		cout<<"=================================================================================================================="<<endl;
+		encontrado=true;
+		}
+		else{
+			ALib=TLib;
+			TLib=TLib->sig;
+		}
+	}
+	
+	if(!encontrado){
+		cout<<"Su libro no fue encontrado"<<endl;
+	}
+}
+
+void ProcModificarLibros(int x){
+	ProcBuscarLibroEsp(x);
+	if(TLib!=NULL){
+			cout << "Ingrese el Id: ";
+			cin >> _Id;
+			cout << "Ingrese el Nombre: ";
+			cin >> _Nombre;
+			cout << "Ingrese la Categoria: ";
+			cin >> _Categoria;
+			cout << "Ingrese la cantidad existente: ";
+			cin >> _Existencia;
+			cout << "Ingrese el precio: ";
+			cin >> _Precio;
+			TLib->Id= _Id;
+			TLib->Nombre= _Nombre;
+			TLib->Categoria = _Categoria;
+			TLib->Existencia = _Existencia;
+			TLib->Precio = _Precio;
+	}
+	ProcGuardarLibrostxt();
+}
+
+void ProcLimpiarLista(){
+	Ilib=NULL;
+	TLib=NULL;
+	Flib=NULL;
+	ALib=NULL;
 }
 /*----------------------------------FINAL MODULO DE LIBROS----------------------------------------------*/
