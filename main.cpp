@@ -4,21 +4,23 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 using namespace std;
 //*** PUNTEROS BASE ***//
-classCliente *I, *F, *T;
+classCliente *Iclient, *Fclient, *Tclient, *Aclient;
 //*** VARIABLES ***//
 int _Opc, _Acc;
 
 //*** Prototipo Funciones ***//
 void ProcSeleccionAcciones();
-
 void ProcGuardarCliente();
 void ProcMostrarCliente();
-void ProcBuscarCliente(int _Id);
+void ProcBuscarCliente(int);
+void ProcEditarCliente(int);
+void ProcEliminarCliente(int);
+/*================================================*/
 
 int main(int argc, char** argv) {
 	do{
-		cout << setw(5) << "  \n                     <<:::: MENU ::::>>" << setw(5) << endl;
-		cout << "1)Cliente     2)Libro     3)Categoria     4)Prestamo Libro     0)Salir" << endl;
+		cout << setw(5) << "  \n    <<:::: MENU ::::>>" << setw(5) << endl;
+		cout << "1)Cliente     2)Libro     3)Prestamo Libro     0)Salir" << endl;
 		cin >> _Opc;
 		
 		switch(_Opc){
@@ -38,12 +40,22 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 3: // *** BUSCAR ***//
+							int _Id;
+							cout << "Ingrese el Id a buscar: ";
+							cin >> _Id;
+							ProcBuscarCliente(_Id);
 							break;
 						
 						case 4: // *** EDITAR ***//
+							cout << "Ingrese el Id a editar: ";
+							cin >> _Id;
+							ProcEditarCliente(_Id);
 							break;
 							
 						case 5: // *** ELIMINAR ***//
+							cout << "Ingrese el Id a eliminar: ";
+							cin >> _Id;
+							ProcEliminarCliente(_Id);
 							break;
 							
 						case 0: // *** SALIR MODULO *** //
@@ -87,38 +99,7 @@ int main(int argc, char** argv) {
 				
 				break;
 				
-			case 3: // *** Modulo Categoria *** //
-				do{
-					ProcSeleccionAcciones();
-					cin >> _Acc;
-				
-					switch(_Acc){
-						case 1: // *** GUARDAR ***//
-							break;
-							
-						case 2: // *** MOSTRAR ***//
-							break;
-							
-						case 3: // *** BUSCAR ***//
-							break;
-						
-						case 4: // *** EDITAR ***//
-							break;
-							
-						case 5: // *** ELIMINAR ***//
-							break;
-							
-						case 0: // *** SALIR MODULO *** //
-							break;
-						
-						default :
-							cout << "Accion no Valida" << endl;
-					}
-				}while(_Acc != 0);
-				
-				break;
-				
-			case 4: // *** Modulo Prestamo Libro *** //
+			case 3: // *** Modulo Prestamo Libro *** //
 				do{
 					ProcSeleccionAcciones();
 					cin >> _Acc;
@@ -162,10 +143,12 @@ int main(int argc, char** argv) {
 	system("pause");
 	return 0;
 }
+/*========================================================*/
 void ProcSeleccionAcciones(){
 	cout << "        1)Guardar     2)Mostrar     3)Buscar     4)Modificar     5)Eliminar     0)Salir" << endl;
 }
 
+/*=============================================================*/
 void ProcGuardarCliente()
 {
 	int _Id, _Codigo;
@@ -183,59 +166,107 @@ void ProcGuardarCliente()
 	cout << "Ingrese la Direccion: ";
 	cin >> _Direccion;
 	
-	T = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
-	T->SetId(_Id);
-	T->SetCodigo(_Codigo);
-	T->SetNombre(_Nombre);
-	T->SetTelefono(_Telefono);
-	T->SetDireccion(_Direccion);
+	Tclient = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
+	Tclient->SetId(_Id);
+	Tclient->SetCodigo(_Codigo);
+	Tclient->SetNombre(_Nombre);
+	Tclient->SetTelefono(_Telefono);
+	Tclient->SetDireccion(_Direccion);
+	Tclient->sig == NULL;
 	
-	if(I == NULL)
+	if(Iclient == NULL)
 	{
-		I = T;
+		Iclient = Tclient;
 	}
 	else
 	{
-		F->sig = T;	
+		Fclient->sig = Tclient;	
 	}
-	F = T;
+	Fclient = Tclient;
 }
 
+/*=========================================================*/
 void ProcMostrarCliente(){
-	T = I;
-	while(T != NULL)
+	Tclient = Iclient;
+	while(Tclient != NULL)
 	{
-		cout << "Id: " << T->GetId()<< endl;
-		cout << "Codigo: " << T->GetCodigo()<< endl;
-		cout << "Nombre: " << T->GetNombre()<< endl;
-		cout << "Telefono: " << T->GetTelefono()<< endl;
-		cout << "Direccion: " << T->GetDireccion()<< endl;
+		cout << "Id: " << Tclient->GetId()<< endl;
+		cout << "Codigo: " << Tclient->GetCodigo()<< endl;
+		cout << "Nombre: " << Tclient->GetNombre()<< endl;
+		cout << "Telefono: " << Tclient->GetTelefono()<< endl;
+		cout << "Direccion: " << Tclient->GetDireccion()<< endl;
 		cout << "==============================================" << endl;
-		T = T->sig;
+		Tclient = Tclient->sig;
 	}
 }
 
+/*============================================================*/
 void ProcBuscarCliente(int _Id){
+	
 	bool encontrado = false;
-	T = I;
-	while(T != NULL && !encontrado)
+	Tclient = Iclient;
+	Aclient = Tclient;
+	while(Tclient != NULL && !encontrado)
 	{
-		if(T->GetId() == _Id)
+		if(Tclient->GetId() == _Id)
 		{
-			cout << "Id: " << T->GetId()<< endl;
-			cout << "Codigo: " << T->GetCodigo()<< endl;
-			cout << "Nombre: " << T->GetNombre()<< endl;
-			cout << "Telefono: " << T->GetTelefono()<< endl;
-			cout << "Direccion: " << T->GetDireccion()<< endl;
+			cout << "Id: " << Tclient->GetId()<< endl;
+			cout << "Codigo: " << Tclient->GetCodigo()<< endl;
+			cout << "Nombre: " << Tclient->GetNombre()<< endl;
+			cout << "Telefono: " << Tclient->GetTelefono()<< endl;
+			cout << "Direccion: " << Tclient->GetDireccion()<< endl;
 			encontrado = true;	
 		}
 		else
 		{
-			T = T->sig;	
+			Aclient = Tclient;
+			Tclient = Tclient->sig;	
 		}
 	}
 	
 	if(!encontrado){
 		cout << "Id no encontrado" << endl;
+	}
+}
+
+/*===================================================================*/
+void ProcEditarCliente(int _Id){
+	int _Codigo;
+	string _Nombre, _Telefono, _Direccion;
+	ProcBuscarCliente(_Id);
+	
+	if(Tclient != NULL){
+		cout << "Ingrese el nuevo Codigo: ";
+		cin >> _Codigo;
+		cout << "Ingrese el nuevo Nombre: ";
+		cin >> _Nombre;
+		cout << "Ingrese el nuevo Telefono: ";
+		cin >> _Telefono;
+		cout << "Ingrese la nueva Direccion: ";
+		cin >> _Direccion;
+		Tclient->SetCodigo(_Codigo);
+		Tclient->SetNombre(_Nombre);
+		Tclient->SetTelefono(_Telefono);
+		Tclient->SetDireccion(_Direccion);
+	}
+}
+
+/*================================================*/
+void ProcEliminarCliente(int _Id){
+	ProcBuscarCliente(_Id);
+	if(Tclient != NULL){
+		if(Iclient = Tclient){
+			Iclient = Iclient->sig;
+			if(Tclient == Fclient){
+				Fclient = NULL;
+			}
+		}
+		else if(Tclient == Fclient){
+			Fclient = Aclient;
+			Aclient->sig = NULL;
+		}
+		else{//no esta en el inicio no al final
+			Aclient->sig = Tclient->sig;	
+		}
 	}
 }
