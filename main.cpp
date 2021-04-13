@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "classCliente.h"
 #include "classLibro.h"
+#include "classPrestamoLibros.h"
 #include <fstream>
 #include <string>
 #include <stdlib.h>
@@ -10,10 +11,11 @@ using namespace std;
 //*** PUNTEROS BASE ***//
 classCliente *Iclient, *Fclient, *Tclient, *Aclient;
 classLibro *Ilib, *Flib, *TLib, *ALib;
+classPrestamoLibros *Iprest, *Tprest, *Fprest, *Aprest;
 //*** VARIABLES ***//
 int _Opc, _Acc;
-int _Id, _Existencia, _Codigo;
-string _Nombre, _Categoria, _Direccion, _Telefono;
+int _Id, _Existencia, _Codigo, _CantInicial, _CantActual;
+string _Nombre, _Categoria, _Direccion, _Telefono, _Libro, _Cliente, _FechaAsignacion, _FechaDevolucion;
 double _Precio;
 //*** Prototipo Funciones ***//
 void ProcSeleccionAcciones();
@@ -35,7 +37,15 @@ void ProcGuardarLibrostxt();
 void ProcBuscarLibros();
 void ProcMostrarLibros();
 void ProcLimpiarLista();
+/*==================================================*/
 
+void ProcGuardarPrestamoLibro(int, string, string, int, int, string, string);
+void ProcGuardarPrestamosLibrostxt();
+void ProcMostrarPrestamoLibros();
+void ProcBuscarPrestamoLibros(int);
+void ProcLimpiarPrestamoLibros();
+void ProcBuscarPrestamoLibrostxt();
+/*==================================================*/
 int main(int argc, char** argv) {
 	do{
 		cout << setw(5) << "  \n    <<:::: MENU ::::>>" << setw(5) << endl;
@@ -50,6 +60,7 @@ int main(int argc, char** argv) {
 					
 					switch(_Acc){
 						case 1:  // *** GUARDAR ***//
+							cout << "\n <<<=================== GUARDAR CLIENTE ======================>>>" << endl;;
 							cout << "Ingrese el Id: ";
 							cin >> _Id;
 							cout << "Ingrese el Codigo: ";
@@ -65,10 +76,12 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 2: // *** MOSTRAR ***//
+							cout << "\n <<<=================== LISTA DE CLIENTE ======================>>>" << endl;
 							ProcMostrarCliente();
 							break;
 							
 						case 3: // *** BUSCAR ***//
+							cout << "\n <<<=================== BUESQUEDA DE CLIENTE ======================>>>" << endl;
 							int _Id;
 							cout << "Ingrese el Id a buscar: ";
 							cin >> _Id;
@@ -76,6 +89,7 @@ int main(int argc, char** argv) {
 							break;
 						
 						case 4: // *** EDITAR ***//
+							cout << "\n <<<=================== EDITAR CLIENTE ======================>>>" << endl;
 							cout << "Ingrese el Id a editar: ";
 							cin >> _Id;
 							ProcEditarCliente(_Id);
@@ -83,6 +97,7 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 5: // *** ELIMINAR ***//
+							cout << "\n <<<=================== ELIMINAR CLIENTE ======================>>>" << endl;
 							cout << "Ingrese el Id a eliminar: ";
 							cin >> _Id;
 							ProcEliminarCliente(_Id);
@@ -106,7 +121,7 @@ int main(int argc, char** argv) {
 				
 					switch(_Acc){
 						case 1: // *** GUARDAR ***//
-							
+							cout << "\n <<<=================== GUARDAR LIBROS ======================>>>";
 							cout << "Ingrese el Id: ";
 							cin >> _Id;
 							cout << "Ingrese el Nombre: ";
@@ -122,18 +137,19 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 2: // *** MOSTRAR ***//
-						   ProcMostrarLibros();
+							cout << "\n <<<=================== LISTA DE LIBROS ======================>>>" << endl;
+						    ProcMostrarLibros();
 							break;
 							
 						case 3: // *** BUSCAR ***//
-							cout << "<<<=================== BUSQUEDA DE LIBROS ======================>>>";
+							cout << "\n <<<=================== BUSQUEDA DE LIBROS ======================>>>" << endl;
 							cout << "\nIngrese el Id: ";
 							cin >> _Id;
 							ProcBuscarLibroEsp(_Id);
 							break;
 						
 						case 4: // *** EDITAR ***//
-							cout << "<<<=================== EDITAR REGISTRO DE LIBROS ======================>>>";
+							cout << "\n <<<=================== EDITAR LIBROS ======================>>>" << endl;
 						    cout << "\nIngrese el Id: ";
 							cin >> _Id;
 							ProcModificarLibros(_Id);
@@ -159,15 +175,43 @@ int main(int argc, char** argv) {
 				
 					switch(_Acc){
 						case 1: // *** GUARDAR ***//
+							cout << "\n <<<=================== GUARDAR PRESTAMOS DE LIBROS ======================>>>" << endl;;
+							cout << "Ingrese el Id: ";
+							cin >> _Id;
+							cout << "Ingrese el Cliente: ";
+							cin >> _Cliente;
+							cout << "Ingrese el Libro: ";
+							cin >> _Libro;
+							cout << "Ingrese la Cant.Inicial: ";
+							cin >> _CantInicial;
+							cout << "Ingrese la Catn.Actual: ";
+							cin >> _CantActual;
+							cout << "Ingrese Fecha Asignacion: ";
+							cin >> _FechaAsignacion;
+							cout << "Ingrese Fecha Devolucion: ";
+							cin >> _FechaDevolucion;
+							ProcGuardarPrestamoLibro(_Id, _Cliente, _Libro, _CantInicial, _CantActual, _FechaAsignacion, _FechaDevolucion);
+							ProcGuardarPrestamosLibrostxt();
 							break;
 							
 						case 2: // *** MOSTRAR ***//
+							cout << "\n <<<=================== LISTA PRESTAMOS DE LIBROS ======================>>>" << endl;
+							ProcMostrarPrestamoLibros();
 							break;
 							
 						case 3: // *** BUSCAR ***//
+							cout << "\n <<<=================== BUESQUEDA PRESTAMOS DE LIBROS ======================>>>" << endl;
+							int _Id;
+							cout << "Ingrese el Id a buscar: ";
+							cin >> _Id;
+							ProcBuscarPrestamoLibros(_Id);
 							break;
 						
 						case 4: // *** EDITAR ***//
+							cout << "\n <<<=================== EDITAR PRESTAMOS DE LIBROS ======================>>>" << endl;
+						    cout << "\nIngrese el Id: ";
+							cin >> _Id;
+							ProcModificarLibros(_Id);
 							break;
 							
 						case 5: // *** ELIMINAR ***//
@@ -198,10 +242,10 @@ int main(int argc, char** argv) {
 }
 /*========================================================*/
 void ProcSeleccionAcciones(){
-	cout << "        1)Guardar     2)Mostrar     3)Buscar     4)Modificar     5)Eliminar     0)Salir" << endl;
+	cout << "\n        1)Guardar     2)Mostrar     3)Buscar     4)Modificar     5)Eliminar     0)Salir" << endl;
 }
 
-/*=============================================================*/
+/*----------------------------------MODULO DE CLIENTE----------------------------------------------*/
 void ProcGuardarCliente(int _Id, int _Codigo, string _Nombre, string _Telefono, string _Direccion)
 {
 	Tclient = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
@@ -245,11 +289,11 @@ void ProcMostrarCliente(){
 	Tclient = Iclient;
 	while(Tclient != NULL)
 	{
-		cout << "Id: " << Tclient->Id<< endl;
-		cout << "Codigo: " << Tclient->Codigo<< endl;
-		cout << "Nombre: " << Tclient->Nombre<< endl;
-		cout << "Telefono: " << Tclient->Telefono<< endl;
-		cout << "Direccion: " << Tclient->Direccion<< endl;
+		cout << "Id: " << Tclient->Id << endl;
+		cout << "Codigo: " << Tclient->Codigo << endl;
+		cout << "Nombre: " << Tclient->Nombre << endl;
+		cout << "Telefono: " << Tclient->Telefono << endl;
+		cout << "Direccion: " << Tclient->Direccion << endl;
 		cout << "==============================================" << endl;
 		Tclient = Tclient->sig;
 	}
@@ -284,7 +328,6 @@ void ProcBuscarCliente(int _Id){
 		cout << "Id no encontrado" << endl;
 	}
 }
-
 
 void ProcBuscarClientestxt(){
 	char Id[128];
@@ -363,35 +406,35 @@ void ProcLimpiarCliente()
 /*----------------------------------MODULO DE LIBROS----------------------------------------------*/
 void ProcGuardarLibro(int id, string nombre, string categoria, int existencia,double precio)
 {
-	TLib=new classLibro();
-	TLib->Id= id;
-	TLib->Nombre= nombre;
-    TLib->Categoria= categoria;
-    TLib->Existencia= existencia;
-    TLib->Precio= precio;
-	TLib->sig=NULL;
+	TLib = new classLibro();
+	TLib->Id = id;
+	TLib->Nombre = nombre;
+    TLib->Categoria = categoria;
+    TLib->Existencia = existencia;
+    TLib->Precio = precio;
+	TLib->sig = NULL;
 	
 	if(Ilib == NULL){
 		Ilib = TLib;
 	}
 	else{
-		Flib->sig=TLib;		
+		Flib->sig = TLib;		
 	}
-	Flib=TLib;
+	Flib = TLib;
 }
 
 void ProcGuardarLibrostxt(){
 	ofstream archivo;
     archivo.open("C:/textos/Libros.txt");
 	
-		TLib=Ilib;	
-	while(TLib!=NULL){
-		archivo<<TLib->Id<<endl;
-		archivo<<TLib->Nombre<<endl;
-		archivo<<TLib->Categoria<<endl;
-		archivo<<TLib->Existencia<<endl;
-		archivo<<TLib->Precio<<endl;
-		TLib=TLib->sig;
+		TLib = Ilib;	
+	while(TLib != NULL){
+		archivo << TLib->Id << endl;
+		archivo << TLib->Nombre << endl;
+		archivo << TLib->Categoria << endl;
+		archivo << TLib->Existencia << endl;
+		archivo << TLib->Precio << endl;
+		TLib = TLib->sig;
 	}
 	archivo.close();
 }
@@ -405,62 +448,61 @@ void ProcBuscarLibros(){
 	ifstream archivo("C:/textos/libros.txt");
 	
 	while(!archivo.eof()){
-		archivo>>Id;
-		archivo>>Nombre;
-		archivo>>Categoria;
-		archivo>>Existencia;
-		archivo>>Precio;
+		archivo >> Id;
+		archivo >> Nombre;
+		archivo >> Categoria;
+		archivo >> Existencia;
+		archivo >> Precio;
 		if(!archivo.eof()){
 			ProcGuardarLibro(atoi(Id),Nombre,Categoria, atoi(Existencia), atoi(Precio));
 		}
 	}
 	archivo.close();
-	
 }
 
 void ProcMostrarLibros(){
 	ProcLimpiarLista();
 	ProcBuscarLibros();
-	TLib=Ilib;	
-	while(TLib!=NULL){
-		cout<<"Id: "<<TLib->Id<<endl;
-		cout<<"Nombre Libro: "<<TLib->Nombre<<endl;
-		cout<<"Categoria: "<<TLib->Categoria<<endl;
-		cout<<"Cantidades Existentes : "<<TLib->Existencia<<endl;
-		cout<<"Precio por unidad: "<<TLib->Precio<<endl;
-		cout<<"================================================================================================================="<<endl;
-		TLib=TLib->sig;
+	TLib = Ilib;	
+	while(TLib != NULL){
+		cout << "Id: " << TLib->Id << endl;
+		cout << "Nombre Libro: " << TLib->Nombre << endl;
+		cout << "Categoria: " << TLib->Categoria << endl;
+		cout << "Cantidades Existentes : " << TLib->Existencia << endl;
+		cout << "Precio por unidad: " << TLib->Precio << endl;
+		cout << "================================================================================================================="<<endl;
+		TLib = TLib->sig;
 	}
 }
 void ProcBuscarLibroEsp(int x){
 	ProcBuscarLibros();
 	bool encontrado=false;
-	TLib=Ilib;	
-	ALib=TLib;
-	while(TLib!=NULL && !encontrado){
+	TLib = Ilib;	
+	ALib = TLib;
+	while(TLib != NULL && !encontrado){
 		if(TLib->Id == x){
-		cout<<"Id: "<<TLib->Id<<endl;
-		cout<<"Nombre Libro: "<<TLib->Nombre<<endl;
-		cout<<"Categoria: "<<TLib->Categoria<<endl;
-		cout<<"Cantidades Existentes : "<<TLib->Existencia<<endl;
-		cout<<"Precio por unidad: "<<TLib->Precio<<endl;
-		cout<<"=================================================================================================================="<<endl;
-		encontrado=true;
+		cout << "Id: " << TLib->Id << endl;
+		cout << "Nombre Libro: " << TLib->Nombre << endl;
+		cout << "Categoria: " << TLib->Categoria << endl;
+		cout << "Cantidades Existentes : " << TLib->Existencia << endl;
+		cout << "Precio por unidad: " << TLib->Precio << endl;
+		cout << "=================================================================================================================="<<endl;
+		encontrado = true;
 		}
 		else{
-			ALib=TLib;
-			TLib=TLib->sig;
+			ALib = TLib;
+			TLib = TLib->sig;
 		}
 	}
 	
 	if(!encontrado){
-		cout<<"Su libro no fue encontrado"<<endl;
+		cout << "Su libro no fue encontrado" << endl;
 	}
 }
 
 void ProcModificarLibros(int x){
 	ProcBuscarLibroEsp(x);
-	if(TLib!=NULL){
+	if(TLib != NULL){
 			cout << "Ingrese el Id: ";
 			cin >> _Id;
 			cout << "Ingrese el Nombre: ";
@@ -471,8 +513,8 @@ void ProcModificarLibros(int x){
 			cin >> _Existencia;
 			cout << "Ingrese el precio: ";
 			cin >> _Precio;
-			TLib->Id= _Id;
-			TLib->Nombre= _Nombre;
+			TLib->Id = _Id;
+			TLib->Nombre = _Nombre;
 			TLib->Categoria = _Categoria;
 			TLib->Existencia = _Existencia;
 			TLib->Precio = _Precio;
@@ -481,9 +523,165 @@ void ProcModificarLibros(int x){
 }
 
 void ProcLimpiarLista(){
-	Ilib=NULL;
-	TLib=NULL;
-	Flib=NULL;
-	ALib=NULL;
+	Ilib = NULL;
+	TLib = NULL;
+	Flib = NULL;
+	ALib = NULL;
+}
+
+/*----------------------------------MODULO DE PRESTAMOS DE LIBROS----------------------------------------------*/
+void ProcGuardarPrestamoLibro(int _Idp, string _Clientep, string _Librop, int _CantInicialp, int _CantActualp, string _FechaAsignacionp, string _FechaDevolucionp)
+{
+	Tprest = new classPrestamoLibros(_Idp, _Clientep, _Librop, _CantInicialp, _CantActualp, _FechaAsignacionp, _FechaDevolucionp);
+	Tprest->IdPrestamoLibro = _Idp;
+	Tprest->Cliente = _Clientep;
+	Tprest->Libro = _Librop;
+	Tprest->CantInicial = _CantInicialp;
+	Tprest->CantActual = _CantActualp;
+	Tprest->FechaAsignacion = _FechaAsignacionp;
+	Tprest->FechaDevolucion = _FechaDevolucionp;
+	Tprest->sig == NULL;
+	
+	if(Iprest == NULL)
+	{
+		Iprest = Tprest;
+	}
+	else
+	{
+		Fprest->sig = Tprest;	
+	}
+	Fprest = Tprest;
+}
+
+void ProcGuardarPrestamosLibrostxt(){
+	ofstream archivo;
+    archivo.open("C:/textos/PrestamosLibros.txt");
+	
+	Tprest = Iprest;	
+	while(Tprest != NULL){
+		archivo << Tprest->IdPrestamoLibro << endl;
+		archivo << Tprest->Cliente << endl;
+		archivo << Tprest->Libro << endl;
+		archivo << Tprest->CantInicial << endl;
+		archivo << Tprest->CantActual << endl;
+		archivo << Tprest->FechaAsignacion << endl;
+		archivo << Tprest->FechaDevolucion << endl;
+		Tprest = Tprest->sig;
+	}
+	archivo.close();
+}
+
+
+void ProcMostrarPrestamoLibros(){
+	ProcLimpiarPrestamoLibros();
+	ProcBuscarPrestamoLibrostxt();
+	Tprest = Iprest;
+	while(Tprest != NULL)
+	{
+		cout << "Id: " << Tprest->IdPrestamoLibro << endl;
+		cout << "Cliente: " << Tprest->Cliente << endl;
+		cout << "Libro: " << Tprest->Libro << endl;
+		cout << "Cant Inicial: " << Tprest->CantInicial << endl;
+		cout << "Cant Actual: " << Tprest->CantActual << endl;
+		cout << "Fecha Asignacion: " << Tprest->FechaAsignacion << endl;
+		cout << "Fecha Devolucion: " << Tprest->FechaDevolucion << endl;
+		cout << "==============================================" << endl;
+		Tprest = Tprest->sig;
+	}
+}
+
+void ProcLimpiarPrestamoLibros()
+{
+	Iprest = NULL;
+	Fprest = NULL;
+	Tprest = NULL;
+	Aprest = NULL;
+}
+void ProcBuscarPrestamoLibrostxt(){
+	char IdPrestamoLibro[128];
+	char Cliente[128];
+	char Libro[128];
+	char CantInicial[128];
+	char CantActual[128];
+	char FechaAsignacion[128];
+	char FechaDevolucion[128];
+	ifstream archivo("C:/textos/PrestamosLibros.txt");
+	
+	while(!archivo.eof()){
+		archivo >> IdPrestamoLibro;
+		archivo >> Cliente;
+		archivo >> Libro;
+		archivo >> CantInicial;
+		archivo >> CantActual;
+		archivo >> FechaAsignacion;
+		archivo >> FechaDevolucion;
+		if(!archivo.eof()){
+			ProcGuardarPrestamoLibro(atoi(IdPrestamoLibro),Cliente,Libro,atoi(CantInicial),atoi(CantActual),FechaAsignacion,FechaDevolucion);
+		}
+	}
+	archivo.close();
+	
+}
+/*=========================================================*/
+void ProcBuscarPrestamoLibros(int _Id){
+	ProcLimpiarPrestamoLibros();
+	ProcBuscarPrestamoLibrostxt();
+	bool encontrado = false;
+	Tprest = Iprest;
+	Aprest = Tprest;
+	while(Tprest != NULL && !encontrado)
+	{
+		if(Tprest->IdPrestamoLibro == _Id)
+		{
+			cout << "Id: " << Tprest->IdPrestamoLibro << endl;
+			cout << "Cliente: " << Tprest->Cliente << endl;
+			cout << "Libro: " << Tprest->Libro << endl;
+			cout << "Cant Inicial: " << Tprest->CantInicial << endl;
+			cout << "Cant Actual: " << Tprest->CantActual << endl;
+			cout << "Fecha Asignaicon: " << Tprest->FechaAsignacion << endl;
+			cout << "Fecha Devolucion: " << Tprest->FechaDevolucion << endl;
+			encontrado = true;	
+		}
+		else
+		{
+			Aprest = Tprest;
+			Tprest = Tprest->sig;	
+		}
+	}
+	
+	if(!encontrado){
+		cout << "Id no encontrado" << endl;
+	}
+}
+
+/*===================================================================*/
+void ProcEditarPrestamoLibros(int _Id){
+	ProcLimpiarPrestamoLibros();
+	ProcBuscarPrestamoLibrostxt();
+	int _CantInicial, _CantActual;
+	string _Cliente, _Libro, _FechaAsignacion, _FechaDevolucion;
+	ProcBuscarPrestamoLibros(_Id);
+
+	if(Tprest != NULL){
+		cout << "Ingrese el nuevo Cliente: ";
+		cin >> _Cliente;
+		cout << "Ingrese el nuevo Libro: ";
+		cin >> _Libro;
+		cout << "Ingrese el nuevo Cant Inicial: ";
+		cin >> _CantInicial;
+		cout << "Ingrese la nueva Cant Actual: ";
+		cin >> _CantActual;
+		cout << "Ingrese el nuevo Fecha Asignacion: ";
+		cin >> _FechaAsignacion;
+		cout << "Ingrese la nueva Fecha Devolucion: ";
+		cin >> _FechaDevolucion;
+		
+		Tprest->Cliente = _Cliente;
+		Tprest->Libro = _Libro;
+		Tprest->CantInicial = _CantInicial;
+		Tprest->CantActual = _CantActual;
+		Tprest->FechaAsignacion = _FechaAsignacion;
+		Tprest->FechaDevolucion = _FechaDevolucion;
+	}
 }
 /*----------------------------------FINAL MODULO DE LIBROS----------------------------------------------*/
