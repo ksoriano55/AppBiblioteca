@@ -20,47 +20,106 @@ void ProcBuscarCliente(int _Id);
 
 int main(int argc, char** argv) {
 	do{
-		cout << setw(5) << "MENU" << setw(5) << endl;
+		cout << setw(5) << "  \n                     <<:::: MENU ::::>>" << setw(5) << endl;
 		cout << "1)Cliente     2)Libro     3)Categoria     4)Prestamo Libro     0)Salir" << endl;
 		cin >> _Opc;
 		
 		switch(_Opc){
-			case 1:
-				ProcSeleccionAcciones();
-				cin >> _Acc;
-				switch(_Acc){
-					case 1:
-						ProcGuardar(_Opc);
-						break;
-					case 2:
-						ProcMostrar(_Opc);
-						break;
-					case 3:
-						ProcBuscar(_Opc);
-						break;
-				}
+			case 1: // *** Modulo Cliente *** //
+				
+				do{
+					ProcSeleccionAcciones();
+					cin >> _Acc;
+				
+					switch(_Acc){
+						case 1:  // *** GUARDAR ***//
+							break;
+							
+						case 2: // *** EDITAR ***//
+							break;
+							
+						case 3: // *** ELIMINAR ***//
+							break;
+						
+						case 0:
+							break;
+					}
+				}while(_Acc != 0);
+				
 				break;
 				
-			case 2:
-				ProcSeleccionAcciones();
-				cin >> _Acc;
+			case 2: // *** Modulo Libro *** //
+				do{
+					ProcSeleccionAcciones();
+					cin >> _Acc;
+				
+					switch(_Acc){
+						case 1: // *** GUARDAR ***//
+							break;
+							
+						case 2: // *** EDITAR ***//
+							break;
+							
+						case 3: // *** ELIMINAR ***//
+							break;
+						
+						case 0:
+							break;
+					}
+				}while(_Acc != 0);
+				
 				break;
 				
-			case 3:
-				ProcSeleccionAcciones();
-				cin >> _Acc;
+			case 3: // *** Modulo Categoria *** //
+				do{
+					ProcSeleccionAcciones();
+					cin >> _Acc;
+				
+					switch(_Acc){
+						case 1: // *** GUARDAR ***//
+							break;
+							
+						case 2: // *** EDITAR ***//
+							break;
+							
+						case 3: // *** ELIMINAR ***//
+							break;
+						
+						case 0:
+							break;
+					}
+				}while(_Acc != 0);
+				
 				break;
 				
-			case 4:
-				ProcSeleccionAcciones();
-				cin >> _Acc;
+			case 4: // *** Modulo Prestamo Libro *** //
+				do{
+					ProcSeleccionAcciones();
+					cin >> _Acc;
+				
+					switch(_Acc){
+						case 1: // *** GUARDAR ***//
+							break;
+							
+						case 2: // *** EDITAR ***//
+							break;
+							
+						case 3: // *** ELIMINAR ***//
+							break;
+						
+						case 0:
+							break;
+					}
+				}while(_Acc != 0);
+				
 				break;
 				
 			case 0:
+				cout << " \n ¡ Cerro Seccion !" << endl;
 				break;
 				
 			default:
-				cout << "Opcion no válida";
+				cout << "Opcion no valida";
 		}
 	}while(_Opc != 0);
 	
