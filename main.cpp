@@ -1,15 +1,23 @@
 #include <iostream>
 #include <iomanip>
 #include "classCliente.h"
+#include "classLibro.h"
+#include <fstream>
+#include <string>
+#include <stdlib.h>
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 using namespace std;
 //*** PUNTEROS BASE ***//
 classCliente *Iclient, *Fclient, *Tclient, *Aclient;
+classLibro *Ilib, *Flib, *TLib;
 //*** VARIABLES ***//
 int _Opc, _Acc;
-
+int _Id, _Existencia;
+string _Nombre, _Categoria;
+double _Precio;
 //*** Prototipo Funciones ***//
 void ProcSeleccionAcciones();
+
 void ProcGuardarCliente();
 void ProcMostrarCliente();
 void ProcBuscarCliente(int);
@@ -17,6 +25,10 @@ void ProcEditarCliente(int);
 void ProcEliminarCliente(int);
 /*================================================*/
 
+void ProcGuardarLibro(int, string, string, int, double);
+void ProcGuardarLibrostxt();
+void ProcBuscarLibros();
+void ProcMostrarLibros();
 int main(int argc, char** argv) {
 	do{
 		cout << setw(5) << "  \n    <<:::: MENU ::::>>" << setw(5) << endl;
@@ -24,8 +36,7 @@ int main(int argc, char** argv) {
 		cin >> _Opc;
 		
 		switch(_Opc){
-			case 1: // *** Modulo Cliente *** //
-				
+		    case 1: // *** Modulo Cliente *** //	
 				do{
 					ProcSeleccionAcciones();
 					cin >> _Acc;
@@ -75,12 +86,27 @@ int main(int argc, char** argv) {
 				
 					switch(_Acc){
 						case 1: // *** GUARDAR ***//
+							
+							cout << "Ingrese el Id: ";
+							cin >> _Id;
+							cout << "Ingrese el Nombre: ";
+							cin >> _Nombre;
+							cout << "Ingrese la Categoria: ";
+							cin >> _Categoria;
+							cout << "Ingrese la cantidad existente: ";
+							cin >> _Existencia;
+							cout << "Ingrese el precio: ";
+							cin >> _Precio;
+							ProcGuardarLibro(_Id,_Nombre,_Categoria,_Existencia,_Precio);
+							ProcGuardarLibrostxt();
 							break;
 							
 						case 2: // *** MOSTRAR ***//
+						   ProcMostrarLibros();
 							break;
 							
 						case 3: // *** BUSCAR ***//
+						ProcBuscarLibros();
 							break;
 						
 						case 4: // *** EDITAR ***//
@@ -202,7 +228,6 @@ void ProcMostrarCliente(){
 
 /*============================================================*/
 void ProcBuscarCliente(int _Id){
-	
 	bool encontrado = false;
 	Tclient = Iclient;
 	Aclient = Tclient;
@@ -234,7 +259,7 @@ void ProcEditarCliente(int _Id){
 	int _Codigo;
 	string _Nombre, _Telefono, _Direccion;
 	ProcBuscarCliente(_Id);
-	
+
 	if(Tclient != NULL){
 		cout << "Ingrese el nuevo Codigo: ";
 		cin >> _Codigo;
@@ -270,3 +295,74 @@ void ProcEliminarCliente(int _Id){
 		}
 	}
 }
+/*----------------------------------MODULO DE LIBROS----------------------------------------------*/
+void ProcGuardarLibro(int id, string nombre, string categoria, int existencia,double precio)
+{
+	TLib=new classLibro();
+	TLib->Id= id;
+	TLib->Nombre= nombre;
+    TLib->Categoria= categoria;
+    TLib->Existencia= existencia;
+    TLib->Precio= precio;
+	TLib->sig=NULL;
+	
+	if(Ilib==NULL){
+		Ilib=TLib;
+	}
+	else{
+		Flib->sig=TLib;		
+	}
+	Flib=TLib;
+}
+
+void ProcGuardarLibrostxt(){
+	ofstream archivo;
+    archivo.open("C:/textos/Libros.txt");
+	
+		TLib=Ilib;	
+	while(TLib!=NULL){
+		archivo<<TLib->Id<<endl;
+		archivo<<TLib->Nombre<<endl;
+		archivo<<TLib->Categoria<<endl;
+		archivo<<TLib->Existencia<<endl;
+		archivo<<TLib->Precio<<endl;
+		TLib=TLib->sig;
+	}
+	archivo.close();
+}
+
+void ProcBuscarLibros(){
+	char Id[128];
+	char Nombre[128];
+	char Categoria[128];
+	char Existencia[128];
+	char Precio[128];
+	ifstream archivo("C:/textos/libros.txt");
+	
+	while(!archivo.eof()){
+		archivo>>Id;
+		archivo>>Nombre;
+		archivo>>Categoria;
+		archivo>>Existencia;
+		archivo>>Precio;
+		if(!archivo.eof()){
+			ProcGuardarLibro(atoi(Id),Nombre,Categoria, atoi(Existencia), atoi(Precio));
+		}
+	}
+	archivo.close();
+	
+}
+
+void ProcMostrarLibros(){
+	TLib=Ilib;	
+	while(TLib!=NULL){
+		cout<<"Id: "<<TLib->Id<<endl;
+		cout<<"Nombre Libro: "<<TLib->Nombre<<endl;
+		cout<<"Categoria: "<<TLib->Categoria<<endl;
+		cout<<"Cantidades Existentes : "<<TLib->Existencia<<endl;
+		cout<<"Precio por unidad: "<<TLib->Precio<<endl;
+		cout<<"================================================================================================================="<<endl;
+		TLib=TLib->sig;
+	}
+}
+/*----------------------------------FINAL MODULO DE LIBROS----------------------------------------------*/
