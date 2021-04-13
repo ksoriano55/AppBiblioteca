@@ -9,16 +9,16 @@ classCliente::classCliente(int _Id, int _Codigo, string _Nombre, string _Telefon
 }
 
 // *** SET *** //
-void classCliente::SetId(int _Id){ Id = _Id; }
+/*void classCliente::SetId(int _Id){ Id = _Id; }
 void classCliente::SetCodigo(int _Codigo){ Codigo = _Codigo; }
 void classCliente::SetNombre(string _Nombre){ Nombre = _Nombre; }
 void classCliente::SetTelefono(string _Telefono){ Telefono = _Telefono; }
-void classCliente::SetDireccion(string _Direccion){ Direccion = _Direccion; }
+void classCliente::SetDireccion(string _Direccion){ Direccion = _Direccion; }*/
 
 // *** GET *** //
-int classCliente::GetId(){ return Id; }
+/*int classCliente::GetId(){ return Id; }
 int classCliente::GetCodigo(){ return Codigo; }
 string classCliente::GetNombre(){ return Nombre; }
 string classCliente::GetTelefono(){ return Telefono; }
-string classCliente::GetDireccion(){ return Direccion; }
+string classCliente::GetDireccion(){ return Direccion; }*/
 

@@ -12,19 +12,22 @@ classCliente *Iclient, *Fclient, *Tclient, *Aclient;
 classLibro *Ilib, *Flib, *TLib, *ALib;
 //*** VARIABLES ***//
 int _Opc, _Acc;
-int _Id, _Existencia;
-string _Nombre, _Categoria;
+int _Id, _Existencia, _Codigo;
+string _Nombre, _Categoria, _Direccion, _Telefono;
 double _Precio;
 //*** Prototipo Funciones ***//
 void ProcSeleccionAcciones();
 
-void ProcGuardarCliente();
+void ProcGuardarCliente(int, int, string, string, string);
+void ProcGuardarClientestxt();
 void ProcMostrarCliente();
 void ProcBuscarCliente(int);
+void ProcBuscarClientestxt();
 void ProcEditarCliente(int);
 void ProcEliminarCliente(int);
 void ProcBuscarLibroEsp(int);
 void ProcModificarLibros(int);
+void ProcLimpiarCliente();
 /*================================================*/
 
 void ProcGuardarLibro(int, string, string, int, double);
@@ -47,7 +50,18 @@ int main(int argc, char** argv) {
 					
 					switch(_Acc){
 						case 1:  // *** GUARDAR ***//
-							ProcGuardarCliente();
+							cout << "Ingrese el Id: ";
+							cin >> _Id;
+							cout << "Ingrese el Codigo: ";
+							cin >> _Codigo;
+							cout << "Ingrese el Nombre: ";
+							cin >> _Nombre;
+							cout << "Ingrese el Telefono: ";
+							cin >> _Telefono;
+							cout << "Ingrese la Direccion: ";
+							cin >> _Direccion;
+							ProcGuardarCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
+							ProcGuardarClientestxt();
 							break;
 							
 						case 2: // *** MOSTRAR ***//
@@ -65,12 +79,14 @@ int main(int argc, char** argv) {
 							cout << "Ingrese el Id a editar: ";
 							cin >> _Id;
 							ProcEditarCliente(_Id);
+							ProcGuardarClientestxt();
 							break;
 							
 						case 5: // *** ELIMINAR ***//
 							cout << "Ingrese el Id a eliminar: ";
 							cin >> _Id;
 							ProcEliminarCliente(_Id);
+							ProcGuardarClientestxt();
 							break;
 							
 						case 0: // *** SALIR MODULO *** //
@@ -117,8 +133,8 @@ int main(int argc, char** argv) {
 							break;
 						
 						case 4: // *** EDITAR ***//
-						cout << "<<<=================== EDITAR REGISTRO DE LIBROS ======================>>>";
-						cout << "\nIngrese el Id: ";
+							cout << "<<<=================== EDITAR REGISTRO DE LIBROS ======================>>>";
+						    cout << "\nIngrese el Id: ";
 							cin >> _Id;
 							ProcModificarLibros(_Id);
 							break;
@@ -186,29 +202,14 @@ void ProcSeleccionAcciones(){
 }
 
 /*=============================================================*/
-void ProcGuardarCliente()
+void ProcGuardarCliente(int _Id, int _Codigo, string _Nombre, string _Telefono, string _Direccion)
 {
-	int _Id, _Codigo;
-	string _Nombre, _Telefono, _Direccion;
-	classCliente C1();
-	
-	cout << "Ingrese el Id: ";
-	cin >> _Id;
-	cout << "Ingrese el Codigo: ";
-	cin >> _Codigo;
-	cout << "Ingrese el Nombre: ";
-	cin >> _Nombre;
-	cout << "Ingrese el Telefono: ";
-	cin >> _Telefono;
-	cout << "Ingrese la Direccion: ";
-	cin >> _Direccion;
-	
 	Tclient = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
-	Tclient->SetId(_Id);
-	Tclient->SetCodigo(_Codigo);
-	Tclient->SetNombre(_Nombre);
-	Tclient->SetTelefono(_Telefono);
-	Tclient->SetDireccion(_Direccion);
+	Tclient->Id = _Id;
+	Tclient->Codigo = _Codigo;
+	Tclient->Nombre = _Nombre;
+	Tclient->Telefono = _Telefono;
+	Tclient->Direccion = _Direccion;
 	Tclient->sig == NULL;
 	
 	if(Iclient == NULL)
@@ -222,16 +223,33 @@ void ProcGuardarCliente()
 	Fclient = Tclient;
 }
 
+void ProcGuardarClientestxt(){
+	ofstream archivo;
+    archivo.open("C:/textos/Clientes.txt");
+	
+	Tclient = Iclient;	
+	while(Tclient != NULL){
+		archivo << Tclient->Id << endl;
+		archivo << Tclient->Codigo << endl;
+		archivo << Tclient->Nombre << endl;
+		archivo << Tclient->Telefono << endl;
+		archivo << Tclient->Direccion << endl;
+		Tclient = Tclient->sig;
+	}
+	archivo.close();
+}
 /*=========================================================*/
 void ProcMostrarCliente(){
+	ProcLimpiarCliente();
+	ProcBuscarClientestxt();
 	Tclient = Iclient;
 	while(Tclient != NULL)
 	{
-		cout << "Id: " << Tclient->GetId()<< endl;
-		cout << "Codigo: " << Tclient->GetCodigo()<< endl;
-		cout << "Nombre: " << Tclient->GetNombre()<< endl;
-		cout << "Telefono: " << Tclient->GetTelefono()<< endl;
-		cout << "Direccion: " << Tclient->GetDireccion()<< endl;
+		cout << "Id: " << Tclient->Id<< endl;
+		cout << "Codigo: " << Tclient->Codigo<< endl;
+		cout << "Nombre: " << Tclient->Nombre<< endl;
+		cout << "Telefono: " << Tclient->Telefono<< endl;
+		cout << "Direccion: " << Tclient->Direccion<< endl;
 		cout << "==============================================" << endl;
 		Tclient = Tclient->sig;
 	}
@@ -239,18 +257,20 @@ void ProcMostrarCliente(){
 
 /*============================================================*/
 void ProcBuscarCliente(int _Id){
+	ProcLimpiarCliente();
+	ProcBuscarClientestxt();
 	bool encontrado = false;
 	Tclient = Iclient;
 	Aclient = Tclient;
 	while(Tclient != NULL && !encontrado)
 	{
-		if(Tclient->GetId() == _Id)
+		if(Tclient->Id == _Id)
 		{
-			cout << "Id: " << Tclient->GetId()<< endl;
-			cout << "Codigo: " << Tclient->GetCodigo()<< endl;
-			cout << "Nombre: " << Tclient->GetNombre()<< endl;
-			cout << "Telefono: " << Tclient->GetTelefono()<< endl;
-			cout << "Direccion: " << Tclient->GetDireccion()<< endl;
+			cout << "Id: " << Tclient->Id << endl;
+			cout << "Codigo: " << Tclient->Codigo << endl;
+			cout << "Nombre: " << Tclient->Nombre << endl;
+			cout << "Telefono: " << Tclient->Telefono << endl;
+			cout << "Direccion: " << Tclient->Direccion << endl;
 			encontrado = true;	
 		}
 		else
@@ -265,8 +285,32 @@ void ProcBuscarCliente(int _Id){
 	}
 }
 
+
+void ProcBuscarClientestxt(){
+	char Id[128];
+	char Codigo[128];
+	char Nombre[128];
+	char Telefono[128];
+	char Direccion[128];
+	ifstream archivo("C:/textos/Clientes.txt");
+	
+	while(!archivo.eof()){
+		archivo >> Id;
+		archivo >> Codigo;
+		archivo >> Nombre;
+		archivo >> Telefono;
+		archivo >> Direccion;
+		if(!archivo.eof()){
+			ProcGuardarCliente(atoi(Id),atoi(Codigo),Nombre,Telefono, Direccion);
+		}
+	}
+	archivo.close();
+	
+}
 /*===================================================================*/
 void ProcEditarCliente(int _Id){
+	ProcLimpiarCliente();
+	ProcBuscarClientestxt();
 	int _Codigo;
 	string _Nombre, _Telefono, _Direccion;
 	ProcBuscarCliente(_Id);
@@ -280,15 +324,17 @@ void ProcEditarCliente(int _Id){
 		cin >> _Telefono;
 		cout << "Ingrese la nueva Direccion: ";
 		cin >> _Direccion;
-		Tclient->SetCodigo(_Codigo);
-		Tclient->SetNombre(_Nombre);
-		Tclient->SetTelefono(_Telefono);
-		Tclient->SetDireccion(_Direccion);
+		Tclient->Codigo = _Codigo;
+		Tclient->Nombre = _Nombre;
+		Tclient->Telefono = _Telefono;
+		Tclient->Direccion = _Direccion;
 	}
 }
 
 /*================================================*/
 void ProcEliminarCliente(int _Id){
+	ProcLimpiarCliente();
+	ProcBuscarClientestxt();
 	ProcBuscarCliente(_Id);
 	if(Tclient != NULL){
 		if(Iclient = Tclient){
@@ -306,6 +352,14 @@ void ProcEliminarCliente(int _Id){
 		}
 	}
 }
+
+void ProcLimpiarCliente()
+{
+	Iclient = NULL;
+	Fclient = NULL;
+	Tclient = NULL;
+	Aclient = NULL;
+}
 /*----------------------------------MODULO DE LIBROS----------------------------------------------*/
 void ProcGuardarLibro(int id, string nombre, string categoria, int existencia,double precio)
 {
@@ -317,8 +371,8 @@ void ProcGuardarLibro(int id, string nombre, string categoria, int existencia,do
     TLib->Precio= precio;
 	TLib->sig=NULL;
 	
-	if(Ilib==NULL){
-		Ilib=TLib;
+	if(Ilib == NULL){
+		Ilib = TLib;
 	}
 	else{
 		Flib->sig=TLib;		
@@ -356,12 +410,12 @@ void ProcBuscarLibros(){
 		archivo>>Categoria;
 		archivo>>Existencia;
 		archivo>>Precio;
-		
 		if(!archivo.eof()){
 			ProcGuardarLibro(atoi(Id),Nombre,Categoria, atoi(Existencia), atoi(Precio));
 		}
 	}
-	archivo.close();	
+	archivo.close();
+	
 }
 
 void ProcMostrarLibros(){
@@ -378,7 +432,6 @@ void ProcMostrarLibros(){
 		TLib=TLib->sig;
 	}
 }
-
 void ProcBuscarLibroEsp(int x){
 	ProcBuscarLibros();
 	bool encontrado=false;
