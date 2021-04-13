@@ -27,15 +27,16 @@ void ProcBuscarCliente(int);
 void ProcBuscarClientestxt();
 void ProcEditarCliente(int);
 void ProcEliminarCliente(int);
-void ProcBuscarLibroEsp(int);
-void ProcModificarLibros(int);
 void ProcLimpiarCliente();
 /*================================================*/
 
 void ProcGuardarLibro(int, string, string, int, double);
 void ProcGuardarLibrostxt();
-void ProcBuscarLibros();
 void ProcMostrarLibros();
+void ProcBuscarLibroEsp(int);
+void ProcBuscarLibros();
+void ProcModificarLibros(int);
+void ProcEliminarLibros(int);
 void ProcLimpiarLista();
 /*==================================================*/
 
@@ -43,6 +44,8 @@ void ProcGuardarPrestamoLibro(int, string, string, int, int, string, string);
 void ProcGuardarPrestamosLibrostxt();
 void ProcMostrarPrestamoLibros();
 void ProcBuscarPrestamoLibros(int);
+void ProcEditarPrestamoLibros(int);
+void ProcEliminarPrestamoLibros(int);
 void ProcLimpiarPrestamoLibros();
 void ProcBuscarPrestamoLibrostxt();
 /*==================================================*/
@@ -121,7 +124,7 @@ int main(int argc, char** argv) {
 				
 					switch(_Acc){
 						case 1: // *** GUARDAR ***//
-							cout << "\n <<<=================== GUARDAR LIBROS ======================>>>";
+							cout << "\n <<<=================== GUARDAR LIBROS ======================>>>" << endl;
 							cout << "Ingrese el Id: ";
 							cin >> _Id;
 							cout << "Ingrese el Nombre: ";
@@ -156,6 +159,11 @@ int main(int argc, char** argv) {
 							break;
 							
 						case 5: // *** ELIMINAR ***//
+							cout << "\n <<<=================== ELIMINAR LIBROS ======================>>>" << endl;
+							cout << "Ingrese el Id a eliminar: ";
+							cin >> _Id;
+							ProcEliminarLibros(_Id);
+							ProcGuardarLibrostxt();
 							break;
 							
 						case 0: // *** SALIR MODULO *** //
@@ -211,10 +219,16 @@ int main(int argc, char** argv) {
 							cout << "\n <<<=================== EDITAR PRESTAMOS DE LIBROS ======================>>>" << endl;
 						    cout << "\nIngrese el Id: ";
 							cin >> _Id;
-							ProcModificarLibros(_Id);
+							ProcEditarPrestamoLibros(_Id);
+							ProcGuardarPrestamosLibrostxt();
 							break;
 							
 						case 5: // *** ELIMINAR ***//
+							cout << "\n <<<=================== ELIMINAR PRESTAMOS DE LIBROS ======================>>>" << endl;
+							cout << "Ingrese el Id a eliminar: ";
+							cin >> _Id;
+							ProcEliminarPrestamoLibros(_Id);
+							ProcGuardarPrestamosLibrostxt(); 
 							break;
 							
 						case 0: // *** SALIR MODULO *** //
@@ -522,6 +536,29 @@ void ProcModificarLibros(int x){
 	ProcGuardarLibrostxt();
 }
 
+void ProcEliminarLibros(int _Id)
+{
+	ProcLimpiarLista();
+	ProcBuscarLibros();
+	ProcBuscarLibroEsp(_Id);
+	if(TLib != NULL){
+		if(Ilib = TLib){
+			Ilib = Ilib->sig;
+			if(TLib == Flib){
+				Flib = NULL;
+			}
+		}
+		else if(TLib == Flib){
+			Flib = ALib;
+			ALib->sig = NULL;
+		}
+		else{//no esta en el inicio no al final
+			ALib->sig = TLib->sig;	
+		}
+	}
+}
+
+
 void ProcLimpiarLista(){
 	Ilib = NULL;
 	TLib = NULL;
@@ -682,6 +719,29 @@ void ProcEditarPrestamoLibros(int _Id){
 		Tprest->CantActual = _CantActual;
 		Tprest->FechaAsignacion = _FechaAsignacion;
 		Tprest->FechaDevolucion = _FechaDevolucion;
+	}
+}
+
+/*==============================================*/
+void ProcEliminarPrestamoLibros(int _Id){
+	ProcLimpiarPrestamoLibros();
+	ProcBuscarPrestamoLibrostxt();
+	ProcBuscarPrestamoLibros(_Id);
+	
+	if(Tprest != NULL){
+		if(Iprest = Tprest){
+			Iprest = Iprest->sig;
+			if(Tprest == Fprest){
+				Fprest = NULL;
+			}
+		}
+		else if(Tprest == Fprest){
+			Fprest = Aprest;
+			Aprest->sig = NULL;
+		}
+		else{//no esta en el inicio no al final
+			Aprest->sig = Tprest->sig;	
+		}
 	}
 }
 /*----------------------------------FINAL MODULO DE LIBROS----------------------------------------------*/
