@@ -4,17 +4,14 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 using namespace std;
 //*** PUNTEROS BASE ***//
-classCliente *Inicio, *Fin, *Terminal;
+classCliente *I, *F, *T;
 //*** VARIABLES ***//
 int _Opc, _Acc;
 
 //*** Prototipo Funciones ***//
-void ProcGuardar(int Opc);
-void ProcMostrar(int Opc);
-void ProcBuscar(int Opc);
 void ProcSeleccionAcciones();
 
-void ProcGuardarCliente(int _Id, int _Codigo, string _Nombre, string _Telefono, string _Direccion);
+void ProcGuardarCliente();
 void ProcMostrarCliente();
 void ProcBuscarCliente(int _Id);
 
@@ -30,19 +27,30 @@ int main(int argc, char** argv) {
 				do{
 					ProcSeleccionAcciones();
 					cin >> _Acc;
-				
+					
 					switch(_Acc){
 						case 1:  // *** GUARDAR ***//
+							ProcGuardarCliente();
 							break;
 							
-						case 2: // *** EDITAR ***//
+						case 2: // *** MOSTRAR ***//
+							ProcMostrarCliente();
 							break;
 							
-						case 3: // *** ELIMINAR ***//
+						case 3: // *** BUSCAR ***//
 							break;
 						
-						case 0:
+						case 4: // *** EDITAR ***//
 							break;
+							
+						case 5: // *** ELIMINAR ***//
+							break;
+							
+						case 0: // *** SALIR MODULO *** //
+							break;
+						
+						default :
+							cout << "Accion no Valida" << endl;
 					}
 				}while(_Acc != 0);
 				
@@ -57,14 +65,23 @@ int main(int argc, char** argv) {
 						case 1: // *** GUARDAR ***//
 							break;
 							
-						case 2: // *** EDITAR ***//
+						case 2: // *** MOSTRAR ***//
 							break;
 							
-						case 3: // *** ELIMINAR ***//
+						case 3: // *** BUSCAR ***//
 							break;
 						
-						case 0:
+						case 4: // *** EDITAR ***//
 							break;
+							
+						case 5: // *** ELIMINAR ***//
+							break;
+							
+						case 0: // *** SALIR MODULO *** //
+							break;
+						
+						default :
+							cout << "Accion no Valida" << endl;
 					}
 				}while(_Acc != 0);
 				
@@ -79,14 +96,23 @@ int main(int argc, char** argv) {
 						case 1: // *** GUARDAR ***//
 							break;
 							
-						case 2: // *** EDITAR ***//
+						case 2: // *** MOSTRAR ***//
 							break;
 							
-						case 3: // *** ELIMINAR ***//
+						case 3: // *** BUSCAR ***//
 							break;
 						
-						case 0:
+						case 4: // *** EDITAR ***//
 							break;
+							
+						case 5: // *** ELIMINAR ***//
+							break;
+							
+						case 0: // *** SALIR MODULO *** //
+							break;
+						
+						default :
+							cout << "Accion no Valida" << endl;
 					}
 				}while(_Acc != 0);
 				
@@ -101,14 +127,23 @@ int main(int argc, char** argv) {
 						case 1: // *** GUARDAR ***//
 							break;
 							
-						case 2: // *** EDITAR ***//
+						case 2: // *** MOSTRAR ***//
 							break;
 							
-						case 3: // *** ELIMINAR ***//
+						case 3: // *** BUSCAR ***//
 							break;
 						
-						case 0:
+						case 4: // *** EDITAR ***//
 							break;
+							
+						case 5: // *** ELIMINAR ***//
+							break;
+							
+						case 0: // *** SALIR MODULO *** //
+							break;
+						
+						default :
+							cout << "Accion no Valida" << endl;
 					}
 				}while(_Acc != 0);
 				
@@ -130,149 +165,77 @@ int main(int argc, char** argv) {
 void ProcSeleccionAcciones(){
 	cout << "        1)Guardar     2)Mostrar     3)Buscar     4)Modificar     5)Eliminar     0)Salir" << endl;
 }
-void ProcGuardarCliente(int _Id, int _Codigo, string _Nombre, string _Telefono, string _Direccion)
+
+void ProcGuardarCliente()
 {
-	Terminal = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
-	Terminal->SetId(_Id);
-	Terminal->SetCodigo(_Codigo);
-	Terminal->SetNombre(_Nombre);
-	Terminal->SetTelefono(_Telefono);
-	Terminal->SetDireccion(_Direccion);
+	int _Id, _Codigo;
+	string _Nombre, _Telefono, _Direccion;
+	classCliente C1();
 	
-	if(Inicio == NULL)
+	cout << "Ingrese el Id: ";
+	cin >> _Id;
+	cout << "Ingrese el Codigo: ";
+	cin >> _Codigo;
+	cout << "Ingrese el Nombre: ";
+	cin >> _Nombre;
+	cout << "Ingrese el Telefono: ";
+	cin >> _Telefono;
+	cout << "Ingrese la Direccion: ";
+	cin >> _Direccion;
+	
+	T = new classCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
+	T->SetId(_Id);
+	T->SetCodigo(_Codigo);
+	T->SetNombre(_Nombre);
+	T->SetTelefono(_Telefono);
+	T->SetDireccion(_Direccion);
+	
+	if(I == NULL)
 	{
-		Inicio = Terminal;
+		I = T;
 	}
 	else
 	{
-		Fin->sig = Terminal;	
+		F->sig = T;	
 	}
-	Fin = Terminal;
+	F = T;
 }
 
 void ProcMostrarCliente(){
-	Terminal = Inicio;
-	while(Terminal != NULL)
+	T = I;
+	while(T != NULL)
 	{
-		cout << "Id: " << Terminal->GetId()<< endl;
-		cout << "Codigo: " << Terminal->GetCodigo()<< endl;
-		cout << "Nombre: " << Terminal->GetNombre()<< endl;
-		cout << "Telefono: " << Terminal->GetTelefono()<< endl;
-		cout << "Direccion: " << Terminal->GetDireccion()<< endl;
+		cout << "Id: " << T->GetId()<< endl;
+		cout << "Codigo: " << T->GetCodigo()<< endl;
+		cout << "Nombre: " << T->GetNombre()<< endl;
+		cout << "Telefono: " << T->GetTelefono()<< endl;
+		cout << "Direccion: " << T->GetDireccion()<< endl;
 		cout << "==============================================" << endl;
-		Terminal = Terminal->sig;
+		T = T->sig;
 	}
 }
 
 void ProcBuscarCliente(int _Id){
 	bool encontrado = false;
-	Terminal = Inicio;
-	while(Terminal != NULL && !encontrado)
+	T = I;
+	while(T != NULL && !encontrado)
 	{
-		if(Terminal->GetId() == _Id)
+		if(T->GetId() == _Id)
 		{
-			cout << "Id: " << Terminal->GetId()<< endl;
-			cout << "Codigo: " << Terminal->GetCodigo()<< endl;
-			cout << "Nombre: " << Terminal->GetNombre()<< endl;
-			cout << "Telefono: " << Terminal->GetTelefono()<< endl;
-			cout << "Direccion: " << Terminal->GetDireccion()<< endl;
+			cout << "Id: " << T->GetId()<< endl;
+			cout << "Codigo: " << T->GetCodigo()<< endl;
+			cout << "Nombre: " << T->GetNombre()<< endl;
+			cout << "Telefono: " << T->GetTelefono()<< endl;
+			cout << "Direccion: " << T->GetDireccion()<< endl;
 			encontrado = true;	
 		}
 		else
 		{
-			Terminal = Terminal->sig;	
+			T = T->sig;	
 		}
 	}
 	
 	if(!encontrado){
 		cout << "Id no encontrado" << endl;
-	}
-}
-
-void ProcGuardar(int Opc){
-	int _Id, _Codigo;
-	string _Nombre, _Telefono, _Direccion; 
-	
-	switch(Opc){
-		case 1:  /// *** guardar Cliete;
-			classCliente Cliente();
-			cout << "Ingrese Id: ";
-			cin >> _Id;
-			cout << "Ingrese Codigo: ";
-			cin >> _Codigo;
-			cout << "Ingrese Nombre: ";
-			cin >> _Nombre;
-			cout << "Ingrese Telefono: ";
-			cin >> _Telefono;
-			cout << "Ingrese Direccion: ";
-			cin >> _Direccion;
-			ProcGuardarCliente(_Id, _Codigo, _Nombre, _Telefono, _Direccion);
-			
-			break;
-		case 2:
-			break;
-		case 0:
-			break;
-			
-		default:
-			cout << "Accion Incorrecta";
-			break;		
-	}
-}
-
-void ProcMostrar(int _Opc)
-{
-	switch(_Opc){
-		case 1:  //Mostrar Cliente
-			ProcMostrarCliente();
-			break;
-		
-		case 2:
-			break;
-			
-		case 3:
-			break;
-			
-		case 4:
-			break;
-			
-		case 5:
-			break;
-			
-		case 0:
-			break;
-			
-		default:
-			cout << "Opcion Incorrecta" << endl;
-	}
-}
-
-void ProcBuscar(int _Opc)
-{
-	int _Id;
-	switch(_Opc){
-		case 1:  //Buscar Cliente
-			cout << "Ingrese el Id del cliente a buscar: ";
-			cin >> _Id;
-			ProcBuscarCliente(_Id);
-			break;
-		
-		case 2:
-			break;
-			
-		case 3:
-			break;
-			
-		case 4:
-			break;
-			
-		case 5:
-			break;
-			
-		case 0:
-			break;
-			
-		default:
-			cout << "Opcion Incorrecta" << endl;
 	}
 }
