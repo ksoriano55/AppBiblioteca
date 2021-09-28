@@ -51,7 +51,7 @@ void ProcBuscarPrestamoLibrostxt();
 /*==================================================*/
 int main(int argc, char** argv) {
 	do{
-		cout << setw(5) << "  \n    <<:::: MENU ::::>>" << setw(5) << endl;
+		cout << setw(5) << "  \n        <<:::: MENU BIBLIOTECA ::::>>" << setw(5) << endl;
 		cout << "1)Cliente     2)Libro     3)Prestamo Libro     0)Salir" << endl;
 		cin >> _Opc;
 		
@@ -393,6 +393,7 @@ void ProcEliminarCliente(int _Id){
 	ProcLimpiarCliente();
 	ProcBuscarClientestxt();
 	ProcBuscarCliente(_Id);
+	
 	if(Tclient != NULL){
 		if(Iclient = Tclient){
 			Iclient = Iclient->sig;
